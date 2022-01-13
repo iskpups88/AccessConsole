@@ -24,9 +24,6 @@ namespace AccessConsole
                 Console.WriteLine("Введите идентификатор пользователя:");
                 var command = Console.ReadLine()?.Trim();
 
-                if (command == "quit")
-                    return;
-
                 if (Subjects.TryGetValue(command, out user))
                 {
                     Console.WriteLine($"User: {user}");
@@ -35,6 +32,7 @@ namespace AccessConsole
 
                     var objectDictionary = PrintAccesses(user);
                     WaitForActions(user, objectDictionary);
+                    Console.WriteLine($"Работа пользователя {user} завершена. До свидания");
                 }
                 else
                 {
@@ -51,17 +49,11 @@ namespace AccessConsole
                 var command = Console.ReadLine()?.Trim();
 
                 if (command == "quit")
-                {
-                    Console.WriteLine($"Работа пользователя {user} завершена. До свидания");
                     return;
-                }
 
                 AccessTypes accessCommand;
-                while (!AccessTypesCommand.TryGetValue(command, out accessCommand) || command == "quit")
+                while (!AccessTypesCommand.TryGetValue(command, out accessCommand))
                 {
-                    if (command == "quit")
-                        return;
-
                     Console.WriteLine("Ошибка ввода. Введите корректную команду.");
                     Console.WriteLine("Жду ваших указаний > ");
                     command = Console.ReadLine()?.Trim();
