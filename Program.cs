@@ -57,8 +57,11 @@ namespace AccessConsole
                 }
 
                 AccessTypes accessCommand;
-                while (!AccessTypesCommand.TryGetValue(command, out accessCommand))
+                while (!AccessTypesCommand.TryGetValue(command, out accessCommand) || command == "quit")
                 {
+                    if (command == "quit")
+                        return;
+
                     Console.WriteLine("Ошибка ввода. Введите корректную команду.");
                     Console.WriteLine("Жду ваших указаний > ");
                     command = Console.ReadLine()?.Trim();
@@ -71,31 +74,42 @@ namespace AccessConsole
 
                     if (AccessMatrix.TryGetValue(key, out var accessType))
                     {
-                        if (!accessType.HasFlag(accessCommand)) Console.WriteLine("Отказ в выполнении операции. У Вас нет прав для ее осуществления");
-
-                        Console.WriteLine("Какое право передается?");
-                        command = Console.ReadLine()?.Trim();
-
-                        while (!AccessTypesCommand.TryGetValue(command, out accessCommand))
+                        if (accessType.HasFlag(accessCommand))
                         {
-                            Console.WriteLine("Некорректная команда");
                             Console.WriteLine("Какое право передается?");
                             command = Console.ReadLine()?.Trim();
-                        }
 
-                        Console.WriteLine("Какому пользователю передается право?");
-                        command = Console.ReadLine()?.Trim();
+                            while (!AccessTypesCommand.TryGetValue(command, out accessCommand) || command == "quit")
+                            {
+                                if (command == "quit")
+                                    return;
 
-                        while (!Subjects.TryGetValue(command, out user))
-                        {
-                            Console.WriteLine("Неккоректный пользователь");
+                                Console.WriteLine("Некорректная команда");
+                                Console.WriteLine("Какое право передается?");
+                                command = Console.ReadLine()?.Trim();
+                            }
+
                             Console.WriteLine("Какому пользователю передается право?");
                             command = Console.ReadLine()?.Trim();
-                        }
 
-                        key = new Key(user, currentObject);
-                        AccessMatrix[key] |= accessCommand;
-                        Console.WriteLine("Операция прошла успешно");
+                            while (!Subjects.TryGetValue(command, out user) || command == "quit")
+                            {
+                                if (command == "quit")
+                                    return;
+
+                                Console.WriteLine("Неккоректный пользователь");
+                                Console.WriteLine("Какому пользователю передается право?");
+                                command = Console.ReadLine()?.Trim();
+                            }
+
+                            key = new Key(user, currentObject);
+                            AccessMatrix[key] |= accessCommand;
+                            Console.WriteLine("Операция прошла успешно");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Отказ в выполнении операции. У Вас нет прав для ее осуществления");
+                        }
                     }
                 }
                 else
