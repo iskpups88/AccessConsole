@@ -71,11 +71,11 @@ namespace AccessConsole
                             Console.WriteLine("Какое право передается?");
                             command = Console.ReadLine()?.Trim();
 
-                            while (!AccessTypesCommand.TryGetValue(command, out accessCommand) || command == "quit")
-                            {
-                                if (command == "quit")
-                                    return;
+                            if (command == "quit")
+                                return;
 
+                            while (!AccessTypesCommand.TryGetValue(command, out accessCommand))
+                            {
                                 Console.WriteLine("Некорректная команда");
                                 Console.WriteLine("Какое право передается?");
                                 command = Console.ReadLine()?.Trim();
@@ -83,13 +83,14 @@ namespace AccessConsole
 
                             Console.WriteLine("Какому пользователю передается право?");
                             command = Console.ReadLine()?.Trim();
+
+                            if (command == "quit")
+                                return;
+
                             string userForGrant;
 
-                            while (!Subjects.TryGetValue(command, out userForGrant) || command == "quit")
+                            while (!Subjects.TryGetValue(command, out userForGrant))
                             {
-                                if (command == "quit")
-                                    return;
-
                                 Console.WriteLine("Неккоректный пользователь");
                                 Console.WriteLine("Какому пользователю передается право?");
                                 command = Console.ReadLine()?.Trim();
