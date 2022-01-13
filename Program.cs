@@ -60,8 +60,8 @@ namespace AccessConsole
                 while (!AccessTypesCommand.TryGetValue(command, out accessCommand))
                 {
                     Console.WriteLine("Ошибка ввода. Введите корректную команду.");
+                    Console.WriteLine("Жду ваших указаний > ");
                     command = Console.ReadLine()?.Trim();
-                    Console.Write("Жду ваших указаний > ");
                 }
 
                 if (accessCommand.HasFlag(AccessTypes.Grant))
