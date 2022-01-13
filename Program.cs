@@ -91,8 +91,9 @@ namespace AccessConsole
 
                             Console.WriteLine("Какому пользователю передается право?");
                             command = Console.ReadLine()?.Trim();
+                            string userForGrant;
 
-                            while (!Subjects.TryGetValue(command, out user) || command == "quit")
+                            while (!Subjects.TryGetValue(command, out userForGrant) || command == "quit")
                             {
                                 if (command == "quit")
                                     return;
@@ -102,7 +103,7 @@ namespace AccessConsole
                                 command = Console.ReadLine()?.Trim();
                             }
 
-                            key = new Key(user, currentObject);
+                            key = new Key(userForGrant, currentObject);
                             AccessMatrix[key] |= accessCommand;
                             Console.WriteLine("Операция прошла успешно");
                         }
